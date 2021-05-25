@@ -1,0 +1,20 @@
+require('dotenv').config()
+const express = require('express')
+const app = express()
+const http = require('http')
+const server = http.createServer(app)
+const option = require('./config/socketOption.config')
+const io = require('socket.io')(server, option)
+const lobby = require('./src/lobby')
+io.use(require('./middlewares/socketGlobal.middleware'))
+io.on('connection', socket => {
+    console.log('new user connected', socket.user.getUsername(), socket.user.getIp())
+    socket.emit('connection', {welcome: 'welcome dear!'})
+    socket.on('message', data => {
+        console.log(data)
+        console.log('getPlayers: ', lobby.getPlayers())
+        console.log('getPlayer: ', lobby.getPlayer("1"))
+    })
+})
+
+server.listen(process.env.PORT, () => console.log(`Server Run on http://localhost:${process.env.PORT}`))
