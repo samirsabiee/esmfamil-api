@@ -4,6 +4,7 @@ module.exports.buildPlayer = async (socket, validator) => {
             id: socket.handshake.auth.user.id.toString(),
             username: socket.handshake.auth.user.username,
             socketId: socket.id,
+            namespace: socket.nsp.name,
             ip: socket.handshake.address,
             validator
         }
@@ -12,6 +13,7 @@ module.exports.buildPlayer = async (socket, validator) => {
             getId: () => player.id,
             getSocketId: () => player.socketId,
             getUsername: () => player.username,
+            getNameSpace: () => player.namespace,
             getIp: () => player.ip
         })
     } catch (e) {
