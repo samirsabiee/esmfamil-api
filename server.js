@@ -7,9 +7,9 @@ const option = require('./config/socketOption.config')
 const io = require('socket.io')(server, option)
 io.of('/home').use(require('./middlewares/socketGlobal.middleware'))
 io.of('/play').use(require('./middlewares/socketGlobal.middleware'))
+const namespaces = require('./src/namespaces')
+require('./src/sockets/home.socket')(io.of(namespaces.home))
 
-require('./src/sockets/home.socket')(io)
-
-require('./src/sockets/play.socket')(io)
+require('./src/sockets/play.socket')(io.of(namespaces.play))
 
 server.listen(process.env.PORT, () => console.log(`Server Run on http://localhost:${process.env.PORT}`))
